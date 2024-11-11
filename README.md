@@ -39,7 +39,8 @@ Q = zeros( length(pitch) , length(action) ) ;
 
 -----------------------------------------------------------------------------------------------
 % part 2 
-
+action_index     = randi(1,length(action));
+state_index      = randi(1,length(action));
 for j = 1: itration
 
 S = S_0 ;  % for condition reseting in each itration
@@ -49,10 +50,32 @@ for i = 1:episode
 % epsilon greedy action selection policy
 if rand(0,1) < epsilon
 action_index = randi(1,length(action));
+act = action(1,action_index);
 else
 action_index = max(Q(state_index,action_index));
+act  = action(1,action_index);
+end
 
-....... I'm very tired , i will back guys 
+ [state,Reward] = quad(S,act);
+
+ state_index_new = find(round(state,2)==pitch);
+ if numel(state_index_new)==0
+ state_index_new = randi(1,length(state));
+ end
+
+ Q(state_index, action_index) = Q(state_index, action_index) + alpha*( R + discount*Q(state_index_new, action_index) - Q(state_index, action_index))
+state_index = stete_index_new;
+
+S = state;
+end
+
+
+% Results part
+% display the you'r charts
+
+end
+
+
 
 
 
